@@ -159,12 +159,326 @@
 
 
 
+---
+
+接下来实现等高布局。上述代码已经完成基本的样式布局，但是给`column-main`添加几个标题和段落，会发现`column-sidebar`内容并没有跟随增大。
+
+```css
+      .column-sidebar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .column-sidebar .title {
+        flex: 1;
+      }
+```
+
+真正需求是让两列扩展到填满容器的高度。因此要将右边栏（`column-sidebar`）改为弹性容器，并设置`flex-direction: column`。然后给里面的两个板块设置非0的`flex-grow`值。
+
+`flex-direction`可以切换主轴的方向，相应的`flex-basis`、`flex-grow`和`flex-shrink`也会跟随作用于主轴的方向。
+
+---
+
+接下来实现登录表单的样式。
+
+```css
+
+      .login-form h3 {
+        margin: 0;
+        font-size: 0.9em;
+        font-weight: bold;
+        text-align: end;
+        text-transform: uppercase;
+      }
+      .login-form input:not([type='checkbox']):not([type='radio']) {
+        display: block;
+        width: 100;
+        margin-top: 0;
+      }
+      .login-form button {
+        margin-top: 1em;
+        border: 1px solid #cb665a;
+        background-color: white;
+        padding: 0.5em 1em;
+        cursor: pointer;
+      }
+```
+
+给输入框设置了`display: block`，让它们单独占据一行，还要将其宽度设置为100%。通常情况下，块级元素会自动填满可用宽度，但是`<input>`比较特殊，其宽度由`size`属性决定，而它表示不出滚动条的情况下大致能容纳的字符数量。如果不指定的话，该属性就会恢复为默认值。可以用`CSS`的`width`属性强制指定宽度。
+
+---
+
+接下来完成板块的最后一部分：
+
+```css
+      .centered {
+        text-align: center;
+      }
+      .cost {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 0.7;
+      }
+
+      .cost > span {
+        margin-top: 0;
+      }
+      .cost-currency {
+        font-size: 2rem;
+      }
+      .cost-dollars {
+        font-size: 4rem;
+      }
+      .cost-cents {
+        font-size: 1.5rem;
+        align-self: flex-start;
+      }
+      .cta-button {
+        display: block;
+        background: #cc6b5a;
+        color: white;
+        padding: 0.5em 1em;
+        text-decoration: none;
+      }
+```
+
+---
+
+完整代码：
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Home</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <style>
+      :root {
+        box-sizing: border-box;
+      }
+      *,
+      ::before,
+      ::after {
+        box-sizing: inherit;
+      }
+
+      body {
+        background: #eee;
+      }
+
+      body * + * {
+        margin-top: 1.5em;
+      }
+      .container {
+        max-width: 1080px;
+        margin: 0 auto;
+      }
+      .site-nav {
+        display: flex;
+        list-style-type: none;
+        background-color: #5f4b44;
+        padding-left: 0;
+        padding: 0.5em;
+      }
+      .site-nav > li {
+        margin-top: 0;
+      }
+
+      .site-nav > li > a {
+        background-color: #cc6b5a;
+        color: white;
+        text-decoration: none;
+        padding: 0.5em 1em;
+        display: block; /*撑开父元素高度 */
+      }
+      .site-nav > li + li {
+        margin-left: 1.5em;
+      }
+      .site-nav > .nav-right {
+        margin-left: auto;
+      }
+
+      .title {
+        padding: 1.5em;
+        background-color: white;
+      }
+      .flex {
+        display: flex;
+      }
+      .flex > * + * {
+        margin-top: 0;
+        margin-left: 1.5em;
+      }
+      .column-main {
+        flex: 2;
+      }
+      .column-sidebar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .column-sidebar .title {
+        flex: 1;
+      }
+
+      .login-form h3 {
+        margin: 0;
+        font-size: 0.9em;
+        font-weight: bold;
+        text-align: end;
+        text-transform: uppercase;
+      }
+      .login-form input:not([type='checkbox']):not([type='radio']) {
+        display: block;
+        width: 100;
+        margin-top: 0;
+      }
+      .login-form button {
+        margin-top: 1em;
+        border: 1px solid #cb665a;
+        background-color: white;
+        padding: 0.5em 1em;
+        cursor: pointer;
+      }
+
+      .centered {
+        text-align: center;
+      }
+      .cost {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        line-height: 0.7;
+      }
+
+      .cost > span {
+        margin-top: 0;
+      }
+      .cost-currency {
+        font-size: 2rem;
+      }
+      .cost-dollars {
+        font-size: 4rem;
+      }
+      .cost-cents {
+        font-size: 1.5rem;
+        align-self: flex-start;
+      }
+      .cta-button {
+        display: block;
+        background: #cc6b5a;
+        color: white;
+        padding: 0.5em 1em;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Ink</h1>
+      </header>
+      <nav>
+        <ul class="site-nav">
+          <li><a href="">Home</a></li>
+          <li><a href="">Features</a></li>
+          <li><a href="">Pricing</a></li>
+          <li><a href="">Support</a></li>
+          <li class="nav-right"><a href="">About</a></li>
+        </ul>
+      </nav>
+      <main class="flex">
+        <div class="column-main title">
+          <h1>Team collaboration done right</h1>
+          <p>
+            Team collaboration done right,Team collaboration done right,Team
+            collaboration done right,Team collaboration done right.
+          </p>
+          <h1>Team collaboration done right</h1>
+          <p>
+            Team collaboration done right,Team collaboration done right,Team
+            collaboration done right,Team collaboration done right.
+          </p>
+          <h1>Team collaboration done right</h1>
+          <p>
+            Team collaboration done right,Team collaboration done right,Team
+            collaboration done right,Team collaboration done right.
+          </p>
+        </div>
+
+        <div class="column-sidebar">
+          <div class="title">
+            <form class="login-form" action="">
+              <h3>login</h3>
+              <p>
+                <label for="username">Username</label>
+                <input id="username" type="text" name="username" />
+              </p>
+              <p>
+                <label for="password">Password</label>
+                <input id="password" type="password" name="password" />
+              </p>
+              <button type="submit">Login</button>
+            </form>
+          </div>
+          <div class="title centered">
+            <small>starting at</small>
+            <div class="cost">
+              <span class="cost-currency">$</span>
+              <span class="cost-dollars">20</span>
+              <span class="cost-cents">.00</span>
+            </div>
+            <a class="cta-button" href="">Sign up</a>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
+```
+
 案例一知识点：
 
 1. 子组合器（`>`）被放在两个 `CSS` 选择器之间。它只匹配那些被第二个选择器匹配的元素，这些元素是被第一个选择器匹配的元素的直接子元素。
 
 
-# `flex`
+# 弹性容器的属性：
+
+![enter description here](./images/1693193350380.png)
+## `flex-wrap`属性
+
+启用换行后，子元素不再根据`flex-shrink`值收缩，任何超过弹性容器的子元素都会换行显示。
+
+如果弹性方向是`column`或`column-reverse`，那么`flex-wrap`会允许弹性子元素换到新的一列显示，不过这只在限制了容器高度的情况下才会发生，否则容器会扩展高度以包含全部弹性子元素。
+
+## `flex-flow`属性
+
+`flex-flow`属性是`flex-direction`和`flex-wrap`的简写。例如，`flex-flow:column wrap`指定弹性子元素按照从上到下的方式排列，必要时换到新的一列。
+
+## `justify-content`属性
+
+当子元素未填满容器时，`justify-content`属性控制子元素沿主轴方向的间距。
+
+间距是在元素的外边距之后进行计算的，而且`flex-grow`的值要考虑进来。也就是说，如果任意子元素的`flex-grow`的值不为0，或者任意子元素在主轴方向的外边距值为`auto`,` justify-content`就失效了。
+
+## `align-items`属性
+
+控制子元素在副轴方向的对齐方式。
+
+## `align-content`属性
+
+如果开启了换行（用`flex-wrap`）,`align-content`属性就可以控制弹性容器内沿副轴方向每行之间的间距。它支持的值有`flex-start`、`flex-end`、`center`、`stretch`（初始值）、`space-between`以及`space-around`。这些值对间距的处理类似上面的`justify-content`。
+
+# 弹性子元素的属性：
+
+![enter description here](./images/1693193381086.png)
+
+
+## `flex`
 
 `flex`属性是三个不同大小属性的简写：`flex-grow`、`flex-shrink`和`flex-basis`。
 
@@ -175,7 +489,15 @@
 	   
 `flex-shrink`属性与`flex-grow`遵循相似的原则。计算出弹性子元素的初始主尺寸后，它们的累加值可能会超出弹性容器的可用宽度。如果不用`flex-shrink`，就会导致溢出。`flex-shrink`属性与`flex-grow`遵循相似的原则。计算出弹性子元素的初始主尺寸后，它们的累加值可能会超出弹性容器的可用宽度。如果不用`flex-shrink`，就会导致溢出。
 
-## 实际应用
+### 实际应用
 
 ![enter description here](./images/1692958877078.png)
+
+## `align-self`属性
+
+该属性控制弹性子元素沿着容器副轴方向的对齐方式。它跟弹性容器的`align-items`属性效果相同，但是它能单独给弹性子元素设定不同的对齐方式。`auto`为初始值，会以容器的`align-items`值为准。其他值会覆盖容器的设置。
+
+## `order`属性
+
+初始状态下，所有的弹性子元素的`order`都为0。指定一个元素的值为−1，它会移动到列表的最前面；指定为1，则会移动到最后。可以按照需要给每个子元素指定`order`以便重新编排它们。这些值不一定要连续。
 
